@@ -68,7 +68,7 @@ def make_parser():
                         help='BDD JSON source')
     parser.add_argument('--save-to', '-save_to', type=str, required=True,
                         help='Folder where images and labels will be stored after conversion')
-    parser.add_argument('--size', '-size', type=str, required=True,
+    parser.add_argument('--size', '-size', type=int, required=True,
                         help='Number of images to work on')
     parser.add_argument('--path_to_images', '-pghost', type=str, required=False,
                         help='Path to BDD images')
