@@ -4,9 +4,12 @@ import json
 import os
 from argparse import ArgumentParser
 
-def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True, labels_filename="labels", make_zip=False):
+def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True, labels_filename=None, make_zip=False):
   annotations, categories, images = [], [], []
   ann_list, cat_list, img_list = [], [], []
+
+  if labels_filename is None:
+    labels_filename = "labels"
 
   # Create temporary dict
   img_temp = {}
