@@ -84,6 +84,6 @@ if __name__ == "__main__":
     parser = make_parser()
     args = parser.parse_args()
     
-    bdd2coco(args.from_file, args.save_to, args.path_to_images, args.copy_images, args.labels_filename, args.make_zip)
+    bdd2coco(args.from_file, args.save_to, args.size, args.path_to_images, args.copy_images, args.labels_filename, args.make_zip)
 
     
