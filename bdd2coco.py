@@ -86,7 +86,7 @@ def make_parser():
                         help='Folder where images and labels will be stored after conversion')
     parser.add_argument('--size', '-size', type=int, required=False,
                         help='Number of images to work on')
-    parser.add_argument('--path_to_images', '-pghost', type=str, required=False,
+    parser.add_argument('--path_to_images', '-path_to_images', type=str, required=False,
                         help='Path to BDD images')
     parser.add_argument('--copy-images', '-copy_images', type=bool, required=False,
                         help='Copy images from BDD source to save_to location')
