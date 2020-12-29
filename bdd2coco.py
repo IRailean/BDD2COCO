@@ -4,12 +4,16 @@ import json
 import os
 from argparse import ArgumentParser
 
-def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True, labels_filename=None, make_zip=False):
+def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True, labels_filename="labels", make_zip=False, remove_folder=True, dataset_type=0):
+  '''
+  copy_images: copy images from bdd dataset
+  labels_filename: output json filename
+  make_zip: create a zip archive containing images/labels
+  remove_folder: clean save_to folder before saving images/labels to it
+  dataset_type: 0 - train, 1 - val
+  '''
   annotations, categories, images = [], [], []
   ann_list, cat_list, img_list = [], [], []
-
-  if labels_filename is None:
-    labels_filename = "labels"
 
   # Create temporary dict
   img_temp = {}
@@ -42,7 +46,7 @@ def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True,
 
   coco = {'annotations' : annotations, 'images' : images, 'categories' : categories}
 
-  if Path(save_to).exists() and Path(save_to).is_dir():
+  if remove_folder and Path(save_to).exists() and Path(save_to).is_dir():
     shutil.rmtree(save_to)
 
   Path(save_to).mkdir(parents=True, exist_ok=True)
@@ -55,10 +59,19 @@ def bdd2coco(from_file, save_to, size=10, path_to_images=None, copy_images=True,
 
   if copy_images:
     Path(save_to + '/images').mkdir(parents=True, exist_ok=True)
+    if dataset_type == 0:
+      Path(save_to + '/images/train').mkdir(parents=True, exist_ok=True)
+    elif dataset_type == 1:
+      Path(save_to + '/images/val').mkdir(parents=True, exist_ok=True)
+
     if path_to_images is None:
-      path_to_images = Path(Path(from_file).parent.parent.parent/'images/100k/train/')
+      path_to_images = Path(Path(from_file).parent.parent.parent/'images/100k')
     for d in data['images']:
-      shutil.copy('/content/bdd100k/images/100k/train/' + d['file_name'], save_to + '/images')
+      if dataset_type == 0:
+        shutil.copy(path_to_images/'train'/d['file_name'], save_to + '/images/train')
+      elif dataset_type == 1:
+        shutil.copy(path_to_images/'val'/d['file_name'], save_to + '/images/val')
+
   archive_name = save_to.split('/')[-1]
   
   if make_zip:
